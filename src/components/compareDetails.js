@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class compareDetails extends Component{
 	constructor(props){
 		super(props);
-	}
+  	}
+
 	render(){
 		let currentProd = this.props.thisProduct;
 		return(
