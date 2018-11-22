@@ -14,11 +14,14 @@ class ProductsLists extends Component{
 		this.dataToChaild = this.dataToChaild.bind(this);
 	}
 
-	handleClickChangeName (product, id) {
+	handleClickChangeName(id){
 		this.setState({
-			buttonName: !this.state.buttonName
+			buttonName: id
 		});
 	}
+	// compareNames(e){
+	// 	e.target.value ? "Remove" : "Compare"
+	// }
 	dataToChaild = (product) =>{
 		// push the selected value to array then setState so that the component will re-render
 		let newValue = this.state.productDetail.concat(product);
@@ -28,6 +31,25 @@ class ProductsLists extends Component{
 	}
 	render(){
 		const productsItems = this.props.products.data.products;
+		const buttonsName = this.state.buttonName;
+		console.log(buttonsName);
+		// let object={};
+		// if(buttonsName === "1"){
+		// 	object ={a:buttonsName}
+		// }else if(buttonsName === "2"){
+		// 	object ={b:buttonsName}
+		// }else if(buttonsName === "3"){
+		// 	object ={c:buttonsName}
+		// }else{
+		// 	object ={d:buttonsName}
+		// }
+		// console.log(object.b);
+
+		let array = [];
+		if(buttonsName !== false){
+			array[buttonsName] += array[buttonsName];
+		}
+		console.log(array.length)
 	return(
 		<div>
 			{productsItems.map((product, index) =>
@@ -36,8 +58,8 @@ class ProductsLists extends Component{
 			 <div className="image_overlay"> </div>
 			 <img src={product.image} title={product.name} alt={product.name} />
 					<div className="view_details" onClick={(event) =>
-						{this.handleClickChangeName(); this.dataToChaild(product)} }>
-							{ this.state.buttonName ? "Remove" : "Compare" }
+						{this.handleClickChangeName(product.id); this.dataToChaild(product)} }>
+							{ this.state.buttonName === product.id ? "Remove" : "Compare" }
 						</div>
 					<div className="starts">
 						<div className="stats-container">
