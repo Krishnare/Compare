@@ -7,27 +7,67 @@ class ProductsLists extends Component{
 		super (props);
 
 		this.state = {
-			buttonName: false,
+			buttonName: "Comare",
 			productDetail: []
 		}
 		this.handleClickChangeName = this.handleClickChangeName.bind(this);
 		this.dataToChaild = this.dataToChaild.bind(this);
 	}
 
-	handleClickChangeName (product, id) {
+	handleClickChangeName(id){
 		this.setState({
-			buttonName: !this.state.buttonName
+			buttonName: id
 		});
 	}
-	dataToChaild = (product) =>{
+
+	dataToChaild = (product, id) =>{
 		// push the selected value to array then setState so that the component will re-render
 		let newValue = this.state.productDetail.concat(product);
-		this.setState({
-			productDetail: newValue
-		}); 
+		let result =[];
+		
+		if(document.getElementById(id).innerHTML === "Compare"){
+			this.setState({
+				productDetail: newValue
+			});
+		}
+
+		//Removing Details
+		if(document.getElementById(id).innerHTML === "Remove"){
+			var jobsUnique = newValue.filter(function(item, index){
+				return newValue.indexOf(item) >= index;
+			});
+			jobsUnique.map(function(item, index, totalItems){
+				if(item.id === id){
+					totalItems.splice(index, 1);
+				}
+			});
+			this.setState({
+				productDetail: jobsUnique
+			});
+		}
 	}
 	render(){
+		//START Updating the Buttons Text
 		const productsItems = this.props.products.data.products;
+		const buttonsName = this.state.buttonName;
+		console.log(buttonsName);
+		let buttonNameObj = {1: undefined, 2: undefined, 3: undefined, 4: undefined};
+		let changeButtonName = 'Compare';
+		for(var prop in buttonNameObj){
+			if(prop === buttonsName){
+				buttonNameObj[prop] = buttonsName;
+			}
+			if(buttonNameObj[prop] !== undefined){
+				var innerText = document.getElementById(buttonsName).innerHTML
+				if(innerText === "Compare"){
+					document.getElementById(buttonsName).innerHTML = "Remove";
+				}else{
+					document.getElementById(buttonsName).innerHTML = "Compare";
+				}
+			}
+		}
+
+		//END Updating the Buttons Text
 	return(
 		<div>
 			{productsItems.map((product, index) =>
@@ -35,9 +75,9 @@ class ProductsLists extends Component{
 			 <div className="product" key={product.id}>
 			 <div className="image_overlay"> </div>
 			 <img src={product.image} title={product.name} alt={product.name} />
-					<div className="view_details" onClick={(event) =>
-						{this.handleClickChangeName(); this.dataToChaild(product)} }>
-							{ this.state.buttonName ? "Remove" : "Compare" }
+					<div className="view_details" id = {product.id} onClick={(event) =>
+						{this.handleClickChangeName(product.id); this.dataToChaild(product, product.id)} }>
+							{ changeButtonName }
 						</div>
 					<div className="starts">
 						<div className="stats-container">
